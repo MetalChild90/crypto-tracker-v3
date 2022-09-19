@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./SearchBox.css";
 
-function SearchBox({ addCoin, coinNames, selectedCoin, watchedCoinNames }) {
+function SearchBox({
+  addCoin,
+  coinNames,
+  selectedCoin,
+  watchedCoinNames,
+  showCoinNames,
+}) {
   const [coin, setCoin] = useState({ name: "" });
   const [textNotification, setTextNotification] = useState("");
+
+  useEffect(() => {
+    setTextNotification("");
+  }, [showCoinNames]);
 
   function handleChange(e) {
     const { name, value } = e.target;

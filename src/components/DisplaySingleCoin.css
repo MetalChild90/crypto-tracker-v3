@@ -17,7 +17,6 @@
 .itemBoxAddMod {
   border: 2px solid yellow;
   background-color: rgb(228, 219, 138);
-  width: 40vw;
 }
 
 .infoBox {
@@ -25,10 +24,6 @@
   justify-content: space-around;
   align-items: center;
   width: 60%;
-}
-
-.infoBoxAdd {
-  width: 70%;
 }
 
 .target-input {

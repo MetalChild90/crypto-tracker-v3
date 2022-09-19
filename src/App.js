@@ -35,11 +35,7 @@ function App() {
   }
 
   useEffect(() => {
-    const watchedCoinNames = [];
-
-    watchedCoins.map((coin) => {
-      watchedCoinNames.push(coin.name);
-    });
+    const watchedCoinNames = watchedCoins.map((coin) => coin.name);
 
     setWatchedCoinNames(watchedCoinNames);
   }, [watchedCoins]);
@@ -54,16 +50,15 @@ function App() {
 
         let coinNames = coins.map((coin) => coin.name.toLowerCase());
 
-        coinNames = coinNames.filter((coin) => {
-          if (
-            !coin.includes("-") &&
-            !coin.includes(".") &&
-            !coin.includes("1x") &&
-            !coin.includes("3x") &&
-            !coin.includes("aave ")
-          )
-            return coin;
-        });
+        coinNames = coinNames.filter((coin) =>
+          !coin.includes("-") &&
+          !coin.includes(".") &&
+          !coin.includes("1x") &&
+          !coin.includes("3x") &&
+          !coin.includes("aave ")
+            ? coin
+            : ""
+        );
 
         setAllCoinNames(coinNames);
         setLoading(false);
@@ -130,6 +125,7 @@ function App() {
               coinNames={allCoinNames}
               selectedCoin={selectedCoin}
               watchedCoinNames={watchedCoinNames}
+              showCoinNames={showCoinNames}
             />
             <button className="button" onClick={handleClickMainButton}>
               {!showCoinNames ? "Show All Coins" : "Show Watched Coins"}

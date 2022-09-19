@@ -113,7 +113,7 @@ function DisplaySingleCoin({
             : ""
         }`}
       >
-        <div className={`infoBox ${type === "add" && "infoBoxAdd"}`}>
+        <div className="infoBox">
           <div>
             {type === "list" ? "" : <p className="label">Name</p>}
             <p className="coin-name">{coin.name}</p>
