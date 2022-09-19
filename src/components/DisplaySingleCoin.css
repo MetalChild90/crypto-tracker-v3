@@ -3,7 +3,7 @@
   justify-content: space-around;
   align-items: center;
 
-  max-width: 1200px;
+  max-width: 1000px;
   width: 80vw;
 
   padding: 30px 0;
@@ -17,6 +17,7 @@
 .itemBoxAddMod {
   border: 2px solid yellow;
   background-color: rgb(228, 219, 138);
+  width: 40vw;
 }
 
 .infoBox {
@@ -24,6 +25,10 @@
   justify-content: space-around;
   align-items: center;
   width: 60%;
+}
+
+.infoBoxAdd {
+  width: 70%;
 }
 
 .target-input {

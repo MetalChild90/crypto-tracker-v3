@@ -113,7 +113,7 @@ function DisplaySingleCoin({
             : ""
         }`}
       >
-        <div className="infoBox">
+        <div className={`infoBox ${type === "add" && "infoBoxAdd"}`}>
           <div>
             {type === "list" ? "" : <p className="label">Name</p>}
             <p className="coin-name">{coin.name}</p>
@@ -157,11 +157,7 @@ function DisplaySingleCoin({
               </>
             )}
           </div>
-          <div>
-            {type === "list" ? "" : <p className="label">Difference</p>}
-            {type === "list" && <p>{distancePercent}%</p>}
-            {type === "add" && <p>-</p>}
-          </div>
+          <div>{type === "list" && <p>{distancePercent}%</p>}</div>
         </div>
         <div className="buttonBox">
           {type === "add" && (
