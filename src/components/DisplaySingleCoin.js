@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useState, useEffect } from "react";
 import calculatePercent from "./calculatePercent";
 import axios from "axios";
@@ -194,5 +195,15 @@ function DisplaySingleCoin({
     </div>
   );
 }
+
+DisplaySingleCoin.propTypes = {
+  coin: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  addCoin: PropTypes.func.isRequired,
+  editCoin: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
+  closeSetItem: PropTypes.func.isRequired,
+  BASE_URL: PropTypes.string.isRequired,
+};
 
 export default DisplaySingleCoin;

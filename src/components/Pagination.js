@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import "./Pagination.css";
 
 const Pagination = ({ coinsPerPage, totalCoins, paginate, currentPage }) => {
@@ -25,6 +25,13 @@ const Pagination = ({ coinsPerPage, totalCoins, paginate, currentPage }) => {
       </ul>
     </nav>
   );
+};
+
+Pagination.propTypes = {
+  coinsPerPage: PropTypes.number.isRequired,
+  totalCoins: PropTypes.number.isRequired,
+  paginate: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
 };
 
 export default Pagination;

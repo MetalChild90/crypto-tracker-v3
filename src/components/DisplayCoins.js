@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import "./DisplayCoins.css";
 
@@ -33,5 +34,12 @@ function DisplayCoins({ coins, watchedCoinNames, loading, addCoin }) {
     </div>
   );
 }
+
+DisplayCoins.propTypes = {
+  coins: PropTypes.array.isRequired,
+  watchedCoinNames: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  addCoin: PropTypes.func.isRequired,
+};
 
 export default DisplayCoins;

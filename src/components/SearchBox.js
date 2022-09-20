@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import "./SearchBox.css";
 
@@ -89,5 +90,13 @@ function SearchBox({
     </div>
   );
 }
+
+SearchBox.propTypes = {
+  addCoin: PropTypes.func.isRequired,
+  coinNames: PropTypes.array.isRequired,
+  selectedCoin: PropTypes.object,
+  watchedCoinNames: PropTypes.array.isRequired,
+  showCoinNames: PropTypes.bool.isRequired,
+};
 
 export default SearchBox;

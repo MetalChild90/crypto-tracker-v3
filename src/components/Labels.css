@@ -1,8 +1,8 @@
 .Labels {
   display: flex;
   align-self: start;
-  width: 70%;
   position: relative;
+  width: 70%;
   font-weight: bold;
   background-color: #fff;
 }
