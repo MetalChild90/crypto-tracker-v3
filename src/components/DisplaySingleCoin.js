@@ -116,18 +116,18 @@ function DisplaySingleCoin({
       >
         <div className="infoBox">
           <div>
-            {type === "list" ? "" : <p className="label">Name</p>}
+            <p className="label">Name</p>
             <p className="coin-name">{coin.name}</p>
           </div>
           <div>
-            {type === "list" ? "" : <p className="label">Price</p>}
+            <p className="label">Price</p>
             {loading ? <p>Is loading...</p> : <p>{price}$</p>}
             {priceNotification && (
               <p className="priceNotification">{priceNotification}</p>
             )}
           </div>
           <div>
-            {type === "list" ? "" : <p className="label">Price target</p>}
+            <p className="label">Price target</p>
             {type === "list" && !editMode && <p>{coin.priceTarget}$</p>}
             {type === "add" && (
               <>
@@ -158,7 +158,10 @@ function DisplaySingleCoin({
               </>
             )}
           </div>
-          <div>{type === "list" && <p>{distancePercent}%</p>}</div>
+          <div>
+            {type === "list" && <p className="label">Distance</p>}
+            <div>{type === "list" && <p>{distancePercent}%</p>}</div>
+          </div>
         </div>
         <div className="buttonBox">
           {type === "add" && (
@@ -173,7 +176,7 @@ function DisplaySingleCoin({
           )}
           {editMode && (
             <button
-              className="button"
+              className="button button-save"
               data-coin-id={coin.id}
               onClick={handleEdit}
             >
@@ -197,13 +200,13 @@ function DisplaySingleCoin({
 }
 
 DisplaySingleCoin.propTypes = {
-  coin: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
-  addCoin: PropTypes.func.isRequired,
-  editCoin: PropTypes.func.isRequired,
-  deleteItem: PropTypes.func.isRequired,
-  closeSetItem: PropTypes.func.isRequired,
-  BASE_URL: PropTypes.string.isRequired,
+  coin: PropTypes.object,
+  type: PropTypes.string,
+  addCoin: PropTypes.func,
+  editCoin: PropTypes.func,
+  deleteItem: PropTypes.func,
+  closeSetItem: PropTypes.func,
+  BASE_URL: PropTypes.string,
 };
 
 export default DisplaySingleCoin;

@@ -92,11 +92,11 @@ function SearchBox({
 }
 
 SearchBox.propTypes = {
-  addCoin: PropTypes.func.isRequired,
-  coinNames: PropTypes.array.isRequired,
+  addCoin: PropTypes.func,
+  coinNames: PropTypes.array,
   selectedCoin: PropTypes.object,
-  watchedCoinNames: PropTypes.array.isRequired,
-  showCoinNames: PropTypes.bool.isRequired,
+  watchedCoinNames: PropTypes.array,
+  showCoinNames: PropTypes.bool,
 };
 
 export default SearchBox;

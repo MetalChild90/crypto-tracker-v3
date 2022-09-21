@@ -28,10 +28,10 @@ const Pagination = ({ coinsPerPage, totalCoins, paginate, currentPage }) => {
 };
 
 Pagination.propTypes = {
-  coinsPerPage: PropTypes.number.isRequired,
-  totalCoins: PropTypes.number.isRequired,
-  paginate: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
+  coinsPerPage: PropTypes.number,
+  totalCoins: PropTypes.number,
+  paginate: PropTypes.func,
+  currentPage: PropTypes.number,
 };
 
 export default Pagination;

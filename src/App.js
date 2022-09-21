@@ -5,7 +5,6 @@ import SearchBox from "./components/SearchBox";
 import DisplayCoins from "./components/DisplayCoins";
 import DisplaySingleCoin from "./components/DisplaySingleCoin";
 import Pagination from "./components/Pagination";
-import Labels from "./components/Labels";
 import "./App.css";
 
 const BASE_URL = "https://api.coingecko.com/api/v3";
@@ -145,7 +144,6 @@ function App() {
             {!showCoinNames && watchedCoins.length > 0 && (
               <div>
                 <h3 className="title watched-coins-title">Watched tokens</h3>
-                <Labels />
                 {watchedCoins.map((coin) => {
                   return (
                     <DisplaySingleCoin

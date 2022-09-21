@@ -36,10 +36,10 @@ function DisplayCoins({ coins, watchedCoinNames, loading, addCoin }) {
 }
 
 DisplayCoins.propTypes = {
-  coins: PropTypes.array.isRequired,
-  watchedCoinNames: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
-  addCoin: PropTypes.func.isRequired,
+  coins: PropTypes.array,
+  watchedCoinNames: PropTypes.array,
+  loading: PropTypes.bool,
+  addCoin: PropTypes.func,
 };
 
 export default DisplayCoins;
