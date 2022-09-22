@@ -11,7 +11,8 @@ const BASE_URL = "https://api.coingecko.com/api/v3";
 
 function App() {
   const [selectedCoin, setSelectedCoin] = useState(null);
-  const [allCoinNames, setAllCoinNames] = useState([]);
+  const [coins, setCoins] = useState([]);
+  const [allCoins, setAllCoins] = useState([]);
   const [showSetItem, setShowSetItem] = useState(false);
   const [showCoinNames, setShowCoinNames] = useState(false);
   const [watchedCoins, setWatchedCoins] = useState([]);
@@ -19,7 +20,7 @@ function App() {
   const [coinNamesNotification, setCoinNamesNotification] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [coinsPerPage] = useState(55);
+  const [coinsPerPage] = useState(100);
 
   function addNewCoin(coin) {
     setSelectedCoin(coin);
@@ -43,23 +44,25 @@ function App() {
     const getCoins = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${BASE_URL}/coins/list`);
+        const res =
+          await axios.get(`${BASE_URL}/coins/markets?vs_currency=usd&order=id_asc&per_page=100&page=${currentPage}&sparkline=false
+        `);
 
-        const coins = res.data;
+        let coins = res.data;
 
-        let coinNames = coins.map((coin) => coin.name.toLowerCase());
+        console.log(coins);
 
-        coinNames = coinNames.filter((coin) =>
-          !coin.includes("-") &&
-          !coin.includes(".") &&
-          !coin.includes("1x") &&
-          !coin.includes("3x") &&
-          !coin.includes("aave ")
-            ? coin
-            : ""
-        );
+        // coins = coins.filter((coin) =>
+        //   !coin.name.includes("-") &&
+        //   !coin.name.includes(".") &&
+        //   !coin.name.includes("1x") &&
+        //   !coin.name.includes("3x") &&
+        //   !coin.name.includes("aave ")
+        //     ? coin
+        //     : ""
+        // );
 
-        setAllCoinNames(coinNames);
+        setCoins(coins);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -70,7 +73,40 @@ function App() {
     };
 
     getCoins();
-  }, []);
+  }, [currentPage]);
+
+  useEffect(() => {
+    const getAllCoins = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(`${BASE_URL}/coins/list`);
+
+        let coins = res.data;
+
+        console.log(coins);
+
+        // coins = coins.filter((coin) =>
+        //   !coin.name.includes("-") &&
+        //   !coin.name.includes(".") &&
+        //   !coin.name.includes("1x") &&
+        //   !coin.name.includes("3x") &&
+        //   !coin.name.includes("aave ")
+        //     ? coin
+        //     : ""
+        // );
+
+        setAllCoins(coins);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setCoinNamesNotification(
+          "Something went wrong. Please, refresh or try again later."
+        );
+      }
+    };
+
+    getAllCoins();
+  }, [currentPage]);
 
   function addCoinToWatchedList(coin, priceTarget) {
     setWatchedCoins((prevState) => {
@@ -106,9 +142,6 @@ function App() {
     setShowSetItem(false);
   }
 
-  const indexOfLastCoin = currentPage * coinsPerPage;
-  const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
-  const currentCoins = allCoinNames.slice(indexOfFirstCoin, indexOfLastCoin);
   function paginate(pageNumber) {
     return setCurrentPage(pageNumber);
   }
@@ -121,7 +154,7 @@ function App() {
             <h1 className="title main-title">crypto tracker</h1>
             <SearchBox
               addCoin={addNewCoin}
-              coinNames={allCoinNames}
+              coinNames={coins}
               selectedCoin={selectedCoin}
               watchedCoinNames={watchedCoinNames}
               showCoinNames={showCoinNames}
@@ -164,14 +197,14 @@ function App() {
             {showCoinNames && (
               <div className="all-coins-wrapper">
                 <DisplayCoins
-                  coins={currentCoins}
+                  coins={coins}
                   watchedCoinNames={watchedCoinNames}
                   loading={loading}
                   addCoin={addNewCoin}
                 />
                 <Pagination
                   coinsPerPage={coinsPerPage}
-                  totalCoins={allCoinNames.length}
+                  totalCoins={allCoins.length}
                   paginate={paginate}
                   currentPage={currentPage}
                 />

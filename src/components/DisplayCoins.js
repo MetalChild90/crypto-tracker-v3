@@ -8,28 +8,43 @@ function DisplayCoins({ coins, watchedCoinNames, loading, addCoin }) {
       {loading ? (
         <h2>Loading...</h2>
       ) : (
-        <>
-          <ul className="coins-list">
-            {coins.map((coin, index) => (
-              <li
-                key={index}
-                className={`coins-list-item ${
-                  watchedCoinNames.includes(coin) && "isWatched"
-                }`}
-              >
-                {coin}
-                {!watchedCoinNames.includes(coin) && (
-                  <button
-                    className="list-item-button"
-                    onClick={() => addCoin({ name: coin })}
-                  >
-                    Add
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        </>
+        <div className="coins-list">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>ATH</th>
+                <th>Add to watched list</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coins.map((coin, index) => (
+                <tr
+                  key={index}
+                  //   className={`coins-list-item
+                  // ${watchedCoinNames.includes(coin) && "isWatched"}
+                  // `}
+                >
+                  <td>{coin.name}</td>
+                  <td>{coin.current_price}</td>
+                  <td>{coin.ath}</td>
+                  {!watchedCoinNames.includes(coin) && (
+                    <td>
+                      <button
+                        className="list-item-button"
+                        onClick={() => addCoin({ name: coin })}
+                      >
+                        Watch
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ul className="coins-list"></ul>
+        </div>
       )}
     </div>
   );
