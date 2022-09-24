@@ -1,18 +1,14 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import calculatePercent from "./calculatePercent";
 import axios from "axios";
+import AppContext from "../context/AppContext";
+
 import "./DisplaySingleCoin.css";
 
-function DisplaySingleCoin({
-  coin,
-  type,
-  addCoin,
-  editCoin,
-  deleteItem,
-  closeSetItem,
-  BASE_URL,
-}) {
+function DisplaySingleCoin() {
+  const { coin, type, addCoin, editCoin, deleteItem, closeSetItem, BASE_URL } =
+    useContext(AppContext);
   const [price, setPrice] = useState(0);
   const [target, setTarget] = useState(0);
   const [targetNotification, setTargetNotification] = useState("");
@@ -85,6 +81,7 @@ function DisplaySingleCoin({
         );
       }
     };
+    
     getCoinPrice(coin.name);
     const interval = setInterval(() => {
       getCoinPrice(coin.name);
@@ -150,6 +147,7 @@ function DisplaySingleCoin({
                   value={editedTarget}
                   onChange={(e) => setEditedTarget(parseFloat(e.target.value))}
                   onKeyDown={handleKeyDownEdit}
+                  onFocus={() => setTargetNotification("")}
                   className="target-input"
                 />
                 {targetNotification && (

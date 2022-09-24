@@ -1,221 +1,42 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
-import SearchBox from "./components/SearchBox";
-import DisplayCoins from "./components/DisplayCoins";
-import DisplaySingleCoin from "./components/DisplaySingleCoin";
-import Pagination from "./components/Pagination";
+import AllCoins from "./components/AllCoins";
+import WatchedCoins from "./components/WatchedCoins";
+import SelectedCoin from "./components/SelectedCoin";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import { useContext } from "react";
+import AppContext from "../src/context/AppContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import "./App.css";
 
-const BASE_URL = "https://api.coingecko.com/api/v3";
-
 function App() {
-  const [selectedCoin, setSelectedCoin] = useState(null);
-  const [coins, setCoins] = useState([]);
-  const [allCoins, setAllCoins] = useState([]);
-  const [showSetItem, setShowSetItem] = useState(false);
-  const [showCoinNames, setShowCoinNames] = useState(false);
-  const [watchedCoins, setWatchedCoins] = useState([]);
-  const [watchedCoinNames, setWatchedCoinNames] = useState([]);
-  const [coinNamesNotification, setCoinNamesNotification] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [coinsPerPage] = useState(100);
-
-  function addNewCoin(coin) {
-    setSelectedCoin(coin);
-    setShowSetItem(true);
-    setShowCoinNames(false);
-  }
-
-  function handleClickMainButton() {
-    setShowCoinNames(!showCoinNames);
-    setSelectedCoin(null);
-    setShowSetItem(false);
-  }
-
-  useEffect(() => {
-    const watchedCoinNames = watchedCoins.map((coin) => coin.name);
-
-    setWatchedCoinNames(watchedCoinNames);
-  }, [watchedCoins]);
-
-  useEffect(() => {
-    const getCoins = async () => {
-      try {
-        setLoading(true);
-        const res =
-          await axios.get(`${BASE_URL}/coins/markets?vs_currency=usd&order=id_asc&per_page=100&page=${currentPage}&sparkline=false
-        `);
-
-        let coins = res.data;
-
-        console.log(coins);
-
-        // coins = coins.filter((coin) =>
-        //   !coin.name.includes("-") &&
-        //   !coin.name.includes(".") &&
-        //   !coin.name.includes("1x") &&
-        //   !coin.name.includes("3x") &&
-        //   !coin.name.includes("aave ")
-        //     ? coin
-        //     : ""
-        // );
-
-        setCoins(coins);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setCoinNamesNotification(
-          "Something went wrong. Please, refresh or try again later."
-        );
-      }
-    };
-
-    getCoins();
-  }, [currentPage]);
-
-  useEffect(() => {
-    const getAllCoins = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`${BASE_URL}/coins/list`);
-
-        let coins = res.data;
-
-        console.log(coins);
-
-        // coins = coins.filter((coin) =>
-        //   !coin.name.includes("-") &&
-        //   !coin.name.includes(".") &&
-        //   !coin.name.includes("1x") &&
-        //   !coin.name.includes("3x") &&
-        //   !coin.name.includes("aave ")
-        //     ? coin
-        //     : ""
-        // );
-
-        setAllCoins(coins);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setCoinNamesNotification(
-          "Something went wrong. Please, refresh or try again later."
-        );
-      }
-    };
-
-    getAllCoins();
-  }, [currentPage]);
-
-  function addCoinToWatchedList(coin, priceTarget) {
-    setWatchedCoins((prevState) => {
-      return [
-        ...prevState,
-        { ...coin, priceTarget: priceTarget, id: uuidv4() },
-      ];
-    });
-    setShowSetItem(false);
-    setSelectedCoin(null);
-  }
-
-  function deleteItem(id) {
-    setWatchedCoins((prevState) => {
-      return prevState.filter((coin) => {
-        return coin.id !== id;
-      });
-    });
-  }
-
-  function editItem(id, target) {
-    let updatedState = watchedCoins.map((coin) => {
-      if (coin.id === id) {
-        return { ...coin, priceTarget: target };
-      }
-      return coin;
-    });
-    setWatchedCoins(updatedState);
-  }
-
-  function closeSetItem() {
-    setSelectedCoin(null);
-    setShowSetItem(false);
-  }
-
-  function paginate(pageNumber) {
-    return setCurrentPage(pageNumber);
-  }
+  const {
+    coins,
+    selectedCoin,
+    coinNamesNotification,
+    handleClickMainButton,
+    showCoinNames,
+    showSetItem,
+    watchedCoins,
+    priceTarget,
+  } = useContext(AppContext);
 
   return (
-    <div className="App">
-      <div className="wrapper">
-        {!coinNamesNotification ? (
-          <>
-            <h1 className="title main-title">crypto tracker</h1>
-            <SearchBox
-              addCoin={addNewCoin}
-              coinNames={coins}
-              selectedCoin={selectedCoin}
-              watchedCoinNames={watchedCoinNames}
-              showCoinNames={showCoinNames}
-            />
-            <button className="button" onClick={handleClickMainButton}>
-              {!showCoinNames ? "Show All Coins" : "Show Watched Coins"}
-            </button>
-            {showSetItem && (
-              <>
-                <h3 className="title new-token-title">Add new token</h3>
-                <DisplaySingleCoin
-                  type="add"
-                  coin={selectedCoin}
-                  addCoin={addCoinToWatchedList}
-                  closeSetItem={closeSetItem}
-                  BASE_URL={BASE_URL}
-                />
-              </>
-            )}
-            {!showCoinNames && watchedCoins.length > 0 && (
-              <div>
-                <h3 className="title watched-coins-title">Watched tokens</h3>
-                {watchedCoins.map((coin) => {
-                  return (
-                    <DisplaySingleCoin
-                      key={coin.id}
-                      coin={coin}
-                      type="list"
-                      deleteItem={deleteItem}
-                      editCoin={editItem}
-                      BASE_URL={BASE_URL}
-                    />
-                  );
-                })}
-              </div>
-            )}
-            {!showCoinNames && watchedCoins.length === 0 && (
-              <p className="no-coins-info">No watched coins yet</p>
-            )}
-            {showCoinNames && (
-              <div className="all-coins-wrapper">
-                <DisplayCoins
-                  coins={coins}
-                  watchedCoinNames={watchedCoinNames}
-                  loading={loading}
-                  addCoin={addNewCoin}
-                />
-                <Pagination
-                  coinsPerPage={coinsPerPage}
-                  totalCoins={allCoins.length}
-                  paginate={paginate}
-                  currentPage={currentPage}
-                />
-              </div>
-            )}
-          </>
-        ) : (
+    <Router>
+      <div className="App">
+        <div className="wrapper">
+          <Header />
+          <div className="box-beneath-header"></div>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/selected-coin/:id" element={<SelectedCoin />} />
+            <Route path="/watched-coins" element={<WatchedCoins />} />
+            <Route path="/all-coins" element={<AllCoins />} />
+          </Routes>
           <div className="coinNamesNotification">{coinNamesNotification}</div>
-        )}
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

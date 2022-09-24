@@ -1,14 +1,11 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import AppContext from "../context/AppContext";
 import "./SearchBox.css";
 
-function SearchBox({
-  addCoin,
-  coinNames,
-  selectedCoin,
-  watchedCoinNames,
-  showCoinNames,
-}) {
+function SearchBox() {
+  const { selectId, coinNames, selectedCoin, watchedCoinNames, showCoinNames } =
+    useContext(AppContext);
   const [coin, setCoin] = useState({ name: "" });
   const [textNotification, setTextNotification] = useState("");
 
@@ -35,7 +32,7 @@ function SearchBox({
         "Save or discard previously selected coin to choose another one."
       );
     } else if (coinNames.includes(token.name)) {
-      addCoin(coin);
+      selectId(token.id);
       setCoin({ name: "" });
       setTextNotification("");
     } else {

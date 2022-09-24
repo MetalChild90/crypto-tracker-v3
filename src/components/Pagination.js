@@ -1,10 +1,14 @@
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
 import "./Pagination.css";
 
-const Pagination = ({ coinsPerPage, totalCoins, paginate, currentPage }) => {
+const Pagination = () => {
+  const { coinsPerPage, allCoins, paginate, currentPage } =
+    useContext(AppContext);
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalCoins / coinsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(allCoins.length / coinsPerPage); i++) {
     pageNumbers.push(i);
   }
 
