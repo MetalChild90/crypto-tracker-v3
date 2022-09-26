@@ -17,6 +17,8 @@ const AppReducer = (state, action) => {
       return { ...state, priceTarget: 0 };
     case "SET_LOADING":
       return { ...state, loading: true };
+    case "CANCEL_LOADING":
+      return { ...state, loading: false };
     default:
       return state;
   }

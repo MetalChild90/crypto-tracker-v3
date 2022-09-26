@@ -1,4 +1,4 @@
-import SearchBox from "./SearchBox";
+import SearchBox from "../components/SearchBox";
 import WatchedCoins from "./WatchedCoins";
 
 function Home() {

@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect, useCallback } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { getAllCoins } from "./AppActions";
 import AppReducer from "./AppReducer";
 
@@ -20,16 +20,6 @@ export const Provider = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
-
-  const fetchAllCoins = useCallback(async () => {
-    dispatch({ type: "SET_LOADING" });
-    const allCoins = await getAllCoins();
-    dispatch({ type: "GET_ALL_COINS", payload: allCoins });
-  }, []);
-
-  useEffect(() => {
-    fetchAllCoins();
-  }, [fetchAllCoins]);
 
   // const [selectedCoin, setSelectedCoin] = useState(null);
   // const [priceTarget, setPriceTarget] = useState(0);

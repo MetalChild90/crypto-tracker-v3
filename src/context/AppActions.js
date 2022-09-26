@@ -7,7 +7,7 @@ export const getCoins = async (currentPage) => {
     // setLoading(true);
     const res =
       await axios.get(`${BASE_URL}/coins/markets?vs_currency=usd&order=id_asc&per_page=100&page=${currentPage}&sparkline=false
-          `);
+            `);
 
     return res.data;
 
@@ -41,11 +41,12 @@ export const getAllCoins = async () => {
 export const getCoin = async (id) => {
   try {
     // setLoading(true);
-    const res = await axios.get(
+    const res = await fetch(
       `${BASE_URL}/coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`
     );
 
-    return res.data;
+    const coin = await res.json();
+    return coin;
 
     // setSelectedCoin(coin);
     // setLoading(false);
