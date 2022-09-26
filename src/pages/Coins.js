@@ -3,6 +3,7 @@ import { getCoins } from "../context/AppActions";
 import AppContext from "../context/AppContext";
 import Pagination from "../components/Pagination";
 import { Link } from "react-router-dom";
+import "./Coins.css";
 
 function AllCoins() {
   const { loading, coins, currentPage, dispatch } = useContext(AppContext);
@@ -16,13 +17,15 @@ function AllCoins() {
     fetchCoins();
   }, [currentPage, dispatch]);
 
+
+
   return (
-    <div className="all-coins-wrapper">
+    <div>
       <h3>Select coin from a list:</h3>
       {loading ? (
         "Is loading..."
       ) : (
-        <>
+        <div className="coins-list">
           <table>
             <thead>
               <tr>
@@ -54,9 +57,8 @@ function AllCoins() {
               ))}
             </tbody>
           </table>
-          ))
           <Pagination />
-        </>
+        </div>
       )}
     </div>
   );

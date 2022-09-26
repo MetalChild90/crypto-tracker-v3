@@ -4,12 +4,16 @@ import AppContext from "../context/AppContext";
 import "./Pagination.css";
 
 const Pagination = () => {
-  const { coinsPerPage, allCoins, paginate, currentPage } =
+  const { coinsPerPage, allCoins, currentPage, dispatch } =
     useContext(AppContext);
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(allCoins.length / coinsPerPage); i++) {
     pageNumbers.push(i);
+  }
+
+  function paginate(pageNumber) {
+    dispatch({ type: "SET_CURRENT_PAGE", payload: pageNumber });
   }
 
   return (

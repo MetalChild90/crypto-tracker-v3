@@ -21,6 +21,15 @@ export const Provider = ({ children }) => {
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  useEffect(() => {
+    const fetchAllCoins = async () => {
+      dispatch({ type: "SET_LOADING" });
+      const allCoins = await getAllCoins();
+      dispatch({ type: "GET_ALL_COINS", payload: allCoins });
+    };
+    fetchAllCoins();
+  }, []);
+
   // const [selectedCoin, setSelectedCoin] = useState(null);
   // const [priceTarget, setPriceTarget] = useState(0);
   // const [editMode, setEditMode] = useState(false);
@@ -77,10 +86,6 @@ export const Provider = ({ children }) => {
   // function closeSetItem() {
   //   setSelectedCoin(null);
   //   setShowSetItem(false);
-  // }
-
-  // function paginate(pageNumber) {
-  //   return setCurrentPage(pageNumber);
   // }
 
   // function handleKeyDownTarget(e) {

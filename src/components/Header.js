@@ -16,7 +16,7 @@ function Header() {
             <Link to="/watched-coins">Watched Coins</Link>
           </li>
           <li>
-            <Link to="/all-coins">All Coins</Link>
+            <Link to="/coins">All Coins</Link>
           </li>
         </ul>
       </nav>

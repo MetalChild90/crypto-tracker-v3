@@ -1,4 +1,4 @@
-import AllCoins from "./pages/AllCoins";
+import Coins from "./pages/Coins";
 import WatchedCoins from "./pages/WatchedCoins";
 import SelectedCoin from "./pages/SelectedCoin";
 import Header from "./components/Header";
@@ -32,7 +32,7 @@ function App() {
             <Route path="/selected-coin/:id" element={<SelectedCoin />} />
             {/* <Route path="/async-wrapper/:id" element={<AsyncWrapper />} /> */}
             <Route path="/watched-coins" element={<WatchedCoins />} />
-            <Route path="/all-coins" element={<AllCoins />} />
+            <Route path="/coins" element={<Coins />} />
           </Routes>
           <div className="coinNamesNotification">{coinNamesNotification}</div>
         </div>

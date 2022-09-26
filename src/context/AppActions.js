@@ -41,12 +41,12 @@ export const getAllCoins = async () => {
 export const getCoin = async (id) => {
   try {
     // setLoading(true);
-    const res = await fetch(
+    const res = await axios.get(
       `${BASE_URL}/coins/${id}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`
     );
 
-    const coin = await res.json();
-    return coin;
+    // const coin = await res.json();
+    return res.data;
 
     // setSelectedCoin(coin);
     // setLoading(false);
