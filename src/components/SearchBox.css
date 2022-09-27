@@ -39,6 +39,7 @@
   height: 30px;
   padding: 10px 20px;
   cursor: pointer;
+  color: black;
 }
 
 .search-box-info.active {
@@ -52,5 +53,6 @@
 }
 
 .button.search-button {
+  color: black;
   box-shadow: 1px 5px 5px -5px rgba(66, 68, 90, 1);
 }

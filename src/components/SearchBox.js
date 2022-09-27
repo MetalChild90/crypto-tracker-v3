@@ -4,37 +4,41 @@ import AppContext from "../context/AppContext";
 import "./SearchBox.css";
 
 function SearchBox() {
-  const { selectId, coinNames, selectedCoin, watchedCoinNames, showCoinNames } =
-    useContext(AppContext);
-  const [coin, setCoin] = useState({ name: "" });
+  const { allCoins, selectedCoin, watchedCoins } = useContext(AppContext);
+  const [typedCoin, setTypedCoin] = useState("");
   const [textNotification, setTextNotification] = useState("");
 
-  useEffect(() => {
-    setTextNotification("");
-  }, [showCoinNames]);
+  // useEffect(() => {
+  //   setTextNotification("");
+  // }, [showCoinNames]);
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setCoin((prevVal) => {
-      return { ...prevVal, [name]: value };
-    });
+    setTypedCoin(e.target.value);
   }
 
   function validateToken(token) {
-    if (coin.name === "") {
+    const capitalizedToken =
+      token.charAt(0).toUpperCase() + token.toLowerCase().slice(1);
+
+    const isInWatchedCoins = watchedCoins.filter(
+      (coin) => coin.name === capitalizedToken
+    );
+    const isTokenExist = allCoins.filter(
+      (coin) => coin.name === capitalizedToken
+    );
+    const tokenId = isTokenExist[0]?.id;
+
+    if (typedCoin === "") {
       setTextNotification("Please, enter name of the coin");
-    } else if (watchedCoinNames.includes(token.name)) {
+    } else if (isInWatchedCoins.length > 0) {
       setTextNotification(
         "You already have this token in your watchlist, choose another one"
       );
-    } else if (selectedCoin) {
-      setTextNotification(
-        "Save or discard previously selected coin to choose another one."
-      );
-    } else if (coinNames.includes(token.name)) {
-      selectId(token.id);
-      setCoin({ name: "" });
+    } else if (isTokenExist.length > 0) {
+      setTypedCoin("");
       setTextNotification("");
+      window.location = `/selected-coin/${tokenId}`;
     } else {
       setTextNotification("Token not found");
     }
@@ -42,12 +46,12 @@ function SearchBox() {
 
   function handleKeyDown(e) {
     if (e.key === "Enter") {
-      validateToken(coin);
+      validateToken(typedCoin);
     }
   }
 
   function handleClose() {
-    setCoin({ name: "" });
+    setTypedCoin("");
     setTextNotification("");
   }
 
@@ -61,7 +65,7 @@ function SearchBox() {
         <input
           name="name"
           type="text"
-          value={coin.name}
+          value={typedCoin}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
@@ -73,7 +77,7 @@ function SearchBox() {
         </span>
         <span
           className="button search-button"
-          onClick={() => validateToken(coin)}
+          onClick={() => validateToken(typedCoin)}
         >
           Search
         </span>
@@ -92,7 +96,7 @@ SearchBox.propTypes = {
   addCoin: PropTypes.func,
   coinNames: PropTypes.array,
   selectedCoin: PropTypes.object,
-  watchedCoinNames: PropTypes.array,
+  watchedCoinIds: PropTypes.array,
   showCoinNames: PropTypes.bool,
 };
 

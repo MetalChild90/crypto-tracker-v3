@@ -6,17 +6,17 @@ const AppContext = createContext();
 
 export const Provider = ({ children }) => {
   const initialState = {
-    selectedCoin: {},
+    selectedCoin: null,
     priceTarget: 0,
     editMode: false,
     coins: [],
     allCoins: [],
     watchedCoins: [],
-    watchedCoinNames: [],
-    coinNamesNotification: "",
+    coinNamesNotification: "", ///????
     loading: true,
     coinsPerPage: 100,
     currentPage: 1,
+    openModal: false,
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
@@ -44,12 +44,6 @@ export const Provider = ({ children }) => {
   // const [loading, setLoading] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [coinsPerPage] = useState(100);
-
-  // useEffect(() => {
-  //   const watchedCoinNames = watchedCoins.map((coin) => coin.name);
-
-  //   setWatchedCoinNames(watchedCoinNames);
-  // }, [watchedCoins]);
 
   // function handleClickMainButton() {
   //   setShowCoinNames(!showCoinNames);

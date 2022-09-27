@@ -1,48 +1,39 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AppContext from "../context/AppContext";
-import PriceTargetForm from "../components/PriceTargetForm";
+
+import WatchedCoin from "../components/WatchedCoin";
+import ActionsModal from "../components/ActionsModal";
+import "./WatchedCoins.css";
 
 function SelectedCoin() {
-  const { loading, watchedCoins } = useContext(AppContext);
-  const [distancePercent, setDistancePercent] = useState(0);
-
-  //   useEffect(() => {
-  //     setDistancePercent(calculatePercent(price, coin.priceTarget));
-  //   }, [price, editMode, coin.priceTarget]);
+  const { watchedCoins, openModal } = useContext(AppContext);
 
   return (
     <div>
-      <h3 className="title watched-coins-title">Watched tokens</h3>
+      <h2 className="title watched-coins-title">Watched tokens</h2>
 
       {watchedCoins.length === 0 ? (
         <p className="no-coins-info">No watched coins yet</p>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Price Target</th>
-              <th>Distance</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading
-              ? "Is loading"
-              : watchedCoins.map((coin) => (
-                  <tr key={coin.id}>
-                    <td>{coin.name}</td>
-                    <td>{coin.price}</td>
-                    <td>{coin.priceTarget}</td>
-                    <td>`${distancePercent}%`</td>
-                    <td>
-                      <span>...</span>
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
+        <div className="watched-coins-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Price Target</th>
+                <th>Distance</th>
+                <th>More</th>
+              </tr>
+            </thead>
+            <tbody>
+              {watchedCoins.map((coin) => (
+                <WatchedCoin key={coin.id} coin={coin} />
+              ))}
+            </tbody>
+          </table>
+          {openModal && <ActionsModal />}
+        </div>
       )}
     </div>
   );

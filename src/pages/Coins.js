@@ -17,11 +17,9 @@ function AllCoins() {
     fetchCoins();
   }, [currentPage, dispatch]);
 
-
-
   return (
     <div>
-      <h3>Select coin from a list:</h3>
+      <h2>Select coin from a list:</h2>
       {loading ? (
         "Is loading..."
       ) : (
@@ -41,7 +39,7 @@ function AllCoins() {
                 <tr
                   key={coin.id}
                   //   className={`coins-list-item
-                  // ${watchedCoinNames.includes(coin) && "isWatched"}
+                  // ${watchedCoinIds.includes(coin) && "isWatched"}
                   // `}
                 >
                   <td>{coin.name}</td>

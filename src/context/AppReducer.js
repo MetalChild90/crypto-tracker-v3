@@ -10,15 +10,41 @@ const AppReducer = (state, action) => {
       return {
         ...state,
         watchedCoins: [...state.watchedCoins, action.payload],
+        priceTarget: 0,
+        selectedCoin: null,
       };
     case "ADD_PRICE_TARGET":
       return { ...state, priceTarget: action.payload };
-    case "DELETE_PRICE_TARGET":
-      return { ...state, priceTarget: 0 };
     case "SET_LOADING":
       return { ...state, loading: true };
     case "SET_CURRENT_PAGE":
       return { ...state, currentPage: action.payload };
+    case "OPEN_MODAL":
+      return {
+        ...state,
+        openModal: !state.openModal,
+        selectedCoin: action.payload,
+      };
+    case "CLOSE_MODAL":
+      return {
+        ...state,
+        openModal: !state.openModal,
+      };
+    case "DELETE_COIN":
+      return { ...state, watchedCoins: action.payload, selectedCoin: null };
+    case "OPEN_EDIT_MODE":
+      return { ...state, editMode: true, priceTarget: action.payload };
+    case "DISCARD_EDITION":
+      return { ...state, editMode: false, selectedCoin: null };
+    case "SAVE_EDITION":
+      return {
+        ...state,
+        watchedCoins: action.payload,
+        editMode: false,
+        selectedCoin: null,
+        priceTarget: 0,
+      };
+
     default:
       return state;
   }
