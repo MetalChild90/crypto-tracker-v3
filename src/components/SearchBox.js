@@ -1,19 +1,16 @@
 import PropTypes from "prop-types";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AppContext from "../context/AppContext";
-import "./SearchBox.css";
 
 function SearchBox() {
-  const { allCoins, selectedCoin, watchedCoins } = useContext(AppContext);
+  const { allCoins, watchedCoins } = useContext(AppContext);
   const [typedCoin, setTypedCoin] = useState("");
   const [textNotification, setTextNotification] = useState("");
 
-  // useEffect(() => {
-  //   setTextNotification("");
-  // }, [showCoinNames]);
+  const navigate = useNavigate();
 
   function handleChange(e) {
-    const { name, value } = e.target;
     setTypedCoin(e.target.value);
   }
 
@@ -38,7 +35,7 @@ function SearchBox() {
     } else if (isTokenExist.length > 0) {
       setTypedCoin("");
       setTextNotification("");
-      window.location = `/selected-coin/${tokenId}`;
+      navigate(`/selected-coin/${tokenId}`);
     } else {
       setTextNotification("Token not found");
     }
@@ -60,21 +57,23 @@ function SearchBox() {
   }
 
   return (
-    <div className="SearchBox">
+    <div className="search-box">
       <div className="input-wrapper">
-        <input
-          name="name"
-          type="text"
-          value={typedCoin}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onFocus={handleFocus}
-          className="search-input"
-          placeholder="Write correct token name"
-        />
-        <span onClick={handleClose} className="clear-input">
-          &times;
-        </span>
+        <div>
+          <input
+            name="name"
+            type="text"
+            value={typedCoin}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onFocus={handleFocus}
+            className="search-input"
+            placeholder="Write correct token name"
+          />
+          <span onClick={handleClose} className="clear-input">
+            &times;
+          </span>
+        </div>
         <span
           className="button search-button"
           onClick={() => validateToken(typedCoin)}
@@ -94,10 +93,8 @@ function SearchBox() {
 
 SearchBox.propTypes = {
   addCoin: PropTypes.func,
-  coinNames: PropTypes.array,
   selectedCoin: PropTypes.object,
   watchedCoinIds: PropTypes.array,
-  showCoinNames: PropTypes.bool,
 };
 
 export default SearchBox;

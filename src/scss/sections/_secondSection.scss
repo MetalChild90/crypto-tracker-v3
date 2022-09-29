@@ -1,0 +1,117 @@
+.SecondSection {
+  height: auto;
+
+  & .innerWraper {
+    @media (min-width: 1200px) {
+      padding: 100px;
+    }
+
+    & h2 {
+      margin-top: 50px;
+      margin-bottom: 50px;
+
+      text-align: center;
+      text-transform: capitalize;
+
+      font-size: 35px;
+
+      @media (min-width: 1200px) {
+        margin-bottom: 100px;
+
+        font-size: 40px;
+      }
+    }
+
+    & .miniSliderSection {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      @media (min-width: 1200px) {
+        flex-direction: row;
+        // margin-bottom: 100px;
+      }
+
+      &.reverse {
+        @media (min-width: 1200px) {
+          flex-direction: row-reverse;
+        }
+      }
+
+      & .infoBox {
+        width: 80vw;
+
+        margin: 50px 20px;
+
+        font-size: 23px;
+
+        @media (min-width: 1200px) {
+          width: 30vw;
+
+          margin: 0 100px 300px;
+        }
+
+        & p {
+          margin-top: 30px;
+        }
+
+        & ul {
+          margin-top: 30px;
+        }
+
+        & li {
+          position: relative;
+
+          margin-left: 20px;
+
+          &::before {
+            content: "";
+
+            position: absolute;
+            top: 10px;
+            left: -20px;
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: $brr;
+
+            background-color: $blue-main;
+          }
+        }
+      }
+    }
+
+    & .cta-btn-wrapper {
+      text-align: center;
+
+      & .cta-btn {
+        padding: 20px;
+        margin: 40px 0 70px;
+        border-radius: $brr;
+
+        border: none;
+
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        font-size: 18px;
+
+        color: $white;
+        background-color: $blue-main;
+
+        transition-duration: $trd;
+        cursor: pointer;
+
+        @media (min-width: 1200px) {
+          margin: -20px 0 0 0;
+
+          &:hover {
+            color: $blue-main;
+            background-color: $nearly-black;
+          }
+        }
+      }
+    }
+  }
+}

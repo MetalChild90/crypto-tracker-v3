@@ -26,27 +26,3 @@
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
-
-.button {
-  display: inline-block;
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 14px;
-  background-color: pink;
-  color: black;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.button-delete {
-  background-color: red;
-  border-color: black;
-}
-
-.button-full-width {
-  width: 100%;
-}

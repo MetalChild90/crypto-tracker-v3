@@ -1,10 +1,9 @@
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
-import SelectedCoin from "../pages/SelectedCoin";
-import "./ActionsModal.css";
 
 function ActionsModal() {
   const { dispatch, watchedCoins, selectedCoin } = useContext(AppContext);
+
   const closeModalHandler = () => {
     dispatch({ type: "CLOSE_MODAL" });
   };

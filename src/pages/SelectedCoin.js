@@ -3,15 +3,16 @@ import { HiArrowRight } from "react-icons/hi";
 import AppContext from "../context/AppContext";
 import PriceTargetForm from "../components/PriceTargetForm";
 import { getCoin } from "../context/AppActions";
-import { useParams, Link } from "react-router-dom";
-import "./SelectedCoin.css";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 function SelectedCoin() {
-  const { loading, selectedCoin, dispatch, priceTarget, watchedCoins } =
+  const { loading, selectedCoin, dispatch, priceTarget } =
     useContext(AppContext);
-  const [notification, setNotification] = useState(false);
+  const [successNotification, setSuccessNotification] = useState(false);
+  const [errorPriceNotification, setErrorPriceNotification] = useState("");
 
   const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCoin = async () => {
@@ -23,23 +24,40 @@ function SelectedCoin() {
     fetchCoin();
   }, [params.id, dispatch]);
 
-  const handleClick = () => {
-    const newWatchedCoin = {
-      id: selectedCoin.id,
-      priceTarget,
-      name: selectedCoin.name,
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "REMOVE_SELECTED_COIN" });
     };
-    dispatch({ type: "ADD_TO_WATCHED_LIST", payload: newWatchedCoin });
-    setNotification(true);
+  }, [dispatch]);
+
+  const handleClick = () => {
+    if (priceTarget <= 0 || isNaN(priceTarget)) {
+      setErrorPriceNotification("Price target can't be 0");
+      return;
+    } else {
+      const newWatchedCoin = {
+        id: selectedCoin.id,
+        priceTarget,
+        name: selectedCoin.name,
+      };
+      dispatch({ type: "ADD_TO_WATCHED_LIST", payload: newWatchedCoin });
+      setErrorPriceNotification("");
+      setSuccessNotification(true);
+    }
+  };
+
+  const closeSelectedCoin = () => {
+    dispatch({ type: "REMOVE_SELECTED_COIN" });
+    navigate("/");
   };
 
   if (loading) {
-    return "Is loading";
+    return "Is loading...";
   }
 
   return (
     <div>
-      {notification ? (
+      {successNotification ? (
         <div>
           <h2>Coin is now watched!!</h2>
           <Link to="/watched-coins">
@@ -68,6 +86,7 @@ function SelectedCoin() {
                 <td>{selectedCoin?.market_data?.current_price?.usd}$</td>
                 <td>
                   <PriceTargetForm />
+                  {errorPriceNotification && <p>{errorPriceNotification}</p>}
                 </td>
                 <td>
                   <button className="list-item-button" onClick={handleClick}>
@@ -75,7 +94,7 @@ function SelectedCoin() {
                   </button>
                 </td>
                 <td>
-                  <button>&times;</button>
+                  <button onClick={closeSelectedCoin}>&times;</button>
                 </td>
               </tr>
             </tbody>

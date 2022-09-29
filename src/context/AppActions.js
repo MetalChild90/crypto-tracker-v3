@@ -11,9 +11,6 @@ export const getCoins = async (currentPage) => {
     return res.data;
   } catch (err) {
     console.log(err);
-    //   setCoinNamesNotification(
-    //     "Something went wrong. Please, refresh or try again later."
-    //   );
   }
 };
 
@@ -24,9 +21,6 @@ export const getAllCoins = async () => {
     return res.data;
   } catch (err) {
     console.log(err);
-    //   setCoinNamesNotification(
-    //     "Something went wrong. Please, refresh or try again later."
-    //   );
   }
 };
 
@@ -38,8 +32,5 @@ export const getCoin = async (id) => {
     return res.data;
   } catch (err) {
     console.log(err);
-    // setCoinNamesNotification(
-    //   "Something went wrong. Please, refresh or try again later."
-    // );
   }
 };

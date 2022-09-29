@@ -1,12 +1,16 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
-
 import WatchedCoin from "../components/WatchedCoin";
 import ActionsModal from "../components/ActionsModal";
-import "./WatchedCoins.css";
 
-function SelectedCoin() {
-  const { watchedCoins, openModal } = useContext(AppContext);
+function WatchedCoins() {
+  const { watchedCoins, openModal, dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "DISCARD_EDITION" });
+    };
+  }, [dispatch]);
 
   return (
     <div>
@@ -39,4 +43,4 @@ function SelectedCoin() {
   );
 }
 
-export default SelectedCoin;
+export default WatchedCoins;

@@ -6,15 +6,13 @@ import AppContext from "../context/AppContext";
 import { FiMoreHorizontal } from "react-icons/fi";
 import PriceTargetForm from "../components/PriceTargetForm";
 
-import "./WatchedCoin.css";
-import SelectedCoin from "../pages/SelectedCoin";
-
 function WatchedCoin({ coin }) {
   const { editMode, dispatch, watchedCoins, selectedCoin, priceTarget } =
     useContext(AppContext);
   const [distancePercent, setDistancePercent] = useState(0);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(0);
+  const [errorPriceNotification, setErrorPriceNotification] = useState("");
 
   useEffect(() => {
     const fetchCoin = () => {
@@ -41,25 +39,42 @@ function WatchedCoin({ coin }) {
   };
 
   const handleSaveChanges = () => {
-    const updatedWatchedCoins = watchedCoins.map((coin) =>
-      coin.id === selectedCoin.id ? { ...selectedCoin, priceTarget } : coin
-    );
-    dispatch({ type: "SAVE_EDITION", payload: updatedWatchedCoins });
+    if (priceTarget <= 0 || isNaN(priceTarget)) {
+      setErrorPriceNotification("Price target can't be 0");
+      return;
+    } else {
+      const updatedWatchedCoins = watchedCoins.map((coin) =>
+        coin.id === selectedCoin.id ? { ...selectedCoin, priceTarget } : coin
+      );
+      dispatch({ type: "SAVE_EDITION", payload: updatedWatchedCoins });
+    }
   };
 
   return (
     <>
-      <tr key={coin.id}>
+      <tr
+        className={`item ${
+          distancePercent >= 0
+            ? "target-hitted"
+            : distancePercent >= -10
+            ? "alert-zone"
+            : ""
+        }`}
+        key={coin.id}
+      >
         <td>{coin.name}</td>
         <td>{!loading ? `${price}$` : "Is loading..."}</td>
         <td>
           {editMode && selectedCoin.id === coin.id ? (
-            <PriceTargetForm />
+            <>
+              <PriceTargetForm />
+              {errorPriceNotification && <p>{errorPriceNotification}</p>}
+            </>
           ) : (
             `${coin.priceTarget}$`
           )}
         </td>
-        <td>{coin.priceTarget === 0 ? "----" : distancePercent + "%"}</td>
+        <td>{distancePercent}%</td>
         <td>
           {editMode && selectedCoin.id === coin.id ? (
             <div>

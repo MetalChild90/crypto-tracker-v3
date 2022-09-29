@@ -1,0 +1,78 @@
+.Socials {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 30px 50px;
+
+  color: $white;
+  background-color: $blue-main;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
+
+  & .group {
+    & .social-links {
+      display: flex;
+
+      & .social-item a .fa-brands {
+        margin-left: 25px;
+
+        font-size: 40px;
+
+        transition: 0.2s;
+
+        cursor: pointer;
+
+        @media (min-width: 1000px) {
+          &:hover {
+            color: $nearly-black;
+          }
+        }
+      }
+    }
+
+    & .action-buttons {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+
+      @media (min-width: 992px) {
+        flex-direction: row;
+
+        margin-top: 0;
+      }
+
+      & .action-item {
+        padding: 10px 20px;
+        margin: 5px;
+        border: 1px solid $white;
+        border-radius: $brr;
+
+        text-align: center;
+
+        font-size: 20px;
+
+        transition-duration: $trd;
+
+        cursor: pointer;
+
+        & i {
+          margin-left: 10px;
+        }
+
+        @media (min-width: 1200px) {
+          margin: 0 15px 0 0;
+
+          &:hover {
+            border-color: $nearly-black;
+
+            background-color: $nearly-black;
+          }
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,8 @@ const AppReducer = (state, action) => {
       return { ...state, allCoins: action.payload, loading: false };
     case "SET_SELECTED_COIN":
       return { ...state, selectedCoin: action.payload, loading: false };
+    case "REMOVE_SELECTED_COIN":
+      return { ...state, selectedCoin: null, priceTarget: 0 };
     case "ADD_TO_WATCHED_LIST":
       return {
         ...state,
@@ -35,7 +37,7 @@ const AppReducer = (state, action) => {
     case "OPEN_EDIT_MODE":
       return { ...state, editMode: true, priceTarget: action.payload };
     case "DISCARD_EDITION":
-      return { ...state, editMode: false, selectedCoin: null };
+      return { ...state, editMode: false, selectedCoin: null, priceTarget: 0 };
     case "SAVE_EDITION":
       return {
         ...state,

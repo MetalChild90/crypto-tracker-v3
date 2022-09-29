@@ -1,30 +1,32 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import AppContext from "../context/AppContext";
-import $ from "jquery";
 
 function PriceTargetForm() {
-  const { priceTarget, dispatch, handleKeyDownTarget } = useContext(AppContext);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const { priceTarget, dispatch } = useContext(AppContext);
+
   const handleChange = (e) => {
-    const priceTarget = parseFloat(e.target.value);
+    const priceTarget = parseFloat(e.target.value) || 0;
     dispatch({ type: "ADD_PRICE_TARGET", payload: priceTarget });
   };
 
-  $("input").on("keypress", function () {
-    if ($(this).val().length > 12) {
-      setIsDisabled(true);
+  const maxLengthCheck = (object) => {
+    if (object.target.value.length > object.target.maxLength) {
+      object.target.value = object.target.value.slice(
+        0,
+        object.target.maxLength
+      );
     }
-  });
+  };
 
   return (
     <>
       <input
+        maxLength="12"
+        onInput={maxLengthCheck}
         type="number"
         value={priceTarget}
         onChange={handleChange}
-        onKeyDown={handleKeyDownTarget}
         className="target-input"
-        disabled={isDisabled}
       />
     </>
   );
