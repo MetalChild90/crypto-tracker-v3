@@ -1,15 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { HiArrowRight } from "react-icons/hi";
 import AppContext from "../context/AppContext";
-import PriceTargetForm from "../components/PriceTargetForm";
 import { getCoin } from "../context/AppActions";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import CoinCard from "../components/CoinCard";
 
 function SelectedCoin() {
-  const { loading, selectedCoin, dispatch, priceTarget } =
+  const { loading, selectedCoin, dispatch, priceTarget, editMode } =
     useContext(AppContext);
   const [successNotification, setSuccessNotification] = useState(false);
-  const [errorPriceNotification, setErrorPriceNotification] = useState("");
 
   const params = useParams();
   const navigate = useNavigate();
@@ -30,9 +29,13 @@ function SelectedCoin() {
     };
   }, [dispatch]);
 
-  const handleClick = () => {
+  const addToWatchList = () => {
+    console.log("work");
     if (priceTarget <= 0 || isNaN(priceTarget)) {
-      setErrorPriceNotification("Price target can't be 0");
+      dispatch({
+        type: "SET_ERROR_PRICE_NOTIFICATION",
+        payload: "Price target can't be 0",
+      });
       return;
     } else {
       const newWatchedCoin = {
@@ -41,7 +44,6 @@ function SelectedCoin() {
         name: selectedCoin.name,
       };
       dispatch({ type: "ADD_TO_WATCHED_LIST", payload: newWatchedCoin });
-      setErrorPriceNotification("");
       setSuccessNotification(true);
     }
   };
@@ -56,7 +58,7 @@ function SelectedCoin() {
   }
 
   return (
-    <div>
+    <div className="selected-coin-box">
       {successNotification ? (
         <div>
           <h2>Coin is now watched!!</h2>
@@ -69,8 +71,16 @@ function SelectedCoin() {
         </div>
       ) : (
         <>
-          <h2 className="title">Add coin to watched list:</h2>
-          <table>
+          <h2 className="title">
+            {!editMode ? "Add coin to watched list" : "Edit coin"}
+          </h2>
+          <CoinCard
+            coin={selectedCoin}
+            type="selected"
+            handleClose={closeSelectedCoin}
+            addToWatchList={addToWatchList}
+          />
+          {/* <table>
             <thead>
               <tr>
                 <th>Name</th>
@@ -98,7 +108,7 @@ function SelectedCoin() {
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
         </>
       )}
     </div>

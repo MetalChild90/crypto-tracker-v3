@@ -3,7 +3,8 @@ import { getCoins } from "../context/AppActions";
 import AppContext from "../context/AppContext";
 import Pagination from "../components/Pagination";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import Coin from "../components/Coin";
+import CoinRow from "../components/CoinRow";
+import CoinCard from "../components/CoinCard";
 
 function AllCoins() {
   const { loading, coins, currentPage, dispatch } = useContext(AppContext);
@@ -38,25 +39,13 @@ function AllCoins() {
               </thead>
               <tbody>
                 {coins.map((coin) => (
-                  <Coin key={coin.id} coin={coin} />
+                  <CoinRow key={coin.id} coin={coin} />
                 ))}
               </tbody>
             </table>
           ) : (
             coins.map((coin) => (
-              <div className="coin-box">
-                <div className="info-box">
-                  <p className="feature-title">Name</p>
-                  <span className="feature-value">{coin.name}</span>
-                  <p className="feature-title">Price</p>
-                  <span className="feature-value">{coin.current_price}</span>
-                  <p className="feature-title">ATH</p>
-                  <span className="feature-value">{coin.ath}</span>
-                </div>
-                <div>
-                  <button className="button">Select</button>
-                </div>
-              </div>
+              <CoinCard key={coin.id} coin={coin} type="allcoins" />
             ))
           )}
 

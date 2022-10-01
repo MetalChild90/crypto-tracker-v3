@@ -16,6 +16,7 @@ export const Provider = ({ children }) => {
     coinsPerPage: 100,
     currentPage: 1,
     openModal: false,
+    errorPriceNotification: "",
   };
 
   const [state, dispatch] = useReducer(AppReducer, initialState);
@@ -28,6 +29,18 @@ export const Provider = ({ children }) => {
     };
     fetchAllCoins();
   }, []);
+
+  useEffect(() => {
+    const storedNotes = JSON.parse(localStorage.getItem("watchedCoins"));
+    dispatch({
+      type: "RETRIVE_WATCHED_LIST_FROM_STORAGE",
+      payload: storedNotes,
+    });
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("watchedCoins", JSON.stringify(state.watchedCoins));
+  }, [state.watchedCoins]);
 
   return (
     <AppContext.Provider

@@ -6,12 +6,25 @@ import AppContext from "../context/AppContext";
 function SearchBox() {
   const { allCoins, watchedCoins } = useContext(AppContext);
   const [typedCoin, setTypedCoin] = useState("");
+  const [hints, setHints] = useState([]);
   const [textNotification, setTextNotification] = useState("");
 
   const navigate = useNavigate();
 
+  const lookForSimilar = (typedName) => {
+    let foundCoins = allCoins.filter((coin) =>
+      coin.name.toLowerCase().startsWith(typedName.toLowerCase()) ? coin : ""
+    );
+    foundCoins = foundCoins.slice(0, 10);
+    setHints(foundCoins);
+  };
+
   function handleChange(e) {
     setTypedCoin(e.target.value);
+    lookForSimilar(e.target.value);
+    if (e.target.value === "") {
+      setHints([]);
+    }
   }
 
   function validateToken(token) {
@@ -50,6 +63,7 @@ function SearchBox() {
   function handleClose() {
     setTypedCoin("");
     setTextNotification("");
+    setHints([]);
   }
 
   function handleFocus() {
@@ -80,13 +94,28 @@ function SearchBox() {
         >
           Search
         </span>
+        {hints.length > 0 && (
+          <div className="hints-box">
+            {hints.map((hint, i) => (
+              <p
+                className="hint"
+                onClick={() => navigate(`/selected-coin/${hint.id}`)}
+                key={i}
+              >
+                {hint.name}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
-      <p className={`search-box-info ${textNotification && "active"}`}>
-        <span>{textNotification}</span>
-        <span className="closeTextNotification" onClick={handleClose}>
-          &times;
-        </span>
-      </p>
+      {textNotification && (
+        <p className="notification">
+          <span>{textNotification}</span>
+          <span className="closeTextNotification" onClick={handleClose}>
+            &times;
+          </span>
+        </p>
+      )}
     </div>
   );
 }

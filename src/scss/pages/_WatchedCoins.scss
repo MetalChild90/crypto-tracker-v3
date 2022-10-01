@@ -1,5 +1,8 @@
 .watched-coins-wrapper {
+  display: flex;
+  justify-content: center;
   position: relative;
+  width: 100vw;
 }
 
 .watched-coins-title {

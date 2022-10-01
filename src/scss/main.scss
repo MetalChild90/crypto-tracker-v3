@@ -2,12 +2,12 @@
 @import "./base/variables";
 @import "./base/mixins";
 @import "./base/reset";
-@import "./base/index";
 @import "./base/app";
 
 // COMPONENTS
 @import "./components/ActionsModal";
-@import "./components/Coin";
+@import "./components/CoinRow";
+@import "./components/CoinCard";
 @import "./components/Header";
 @import "./components/Pagination";
 @import "./components/SearchBox";

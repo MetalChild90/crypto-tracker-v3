@@ -1,3 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap");
+
+body {
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  background-color: $dark-grey;
+  color: $white;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
@@ -31,7 +40,7 @@
 }
 
 .button-delete {
-  background-color: red;
+  background-color: rgba(238, 77, 77, 0.925);
   border-color: $black;
 }
 
@@ -62,36 +71,36 @@ input {
   background-color: $white;
 }
 
-input[type="number"] {
-  text-align: right;
+.notification {
+  margin: $small 0;
+  color: $pink;
 }
 
-input[type="text"] {
-  text-align: left;
-}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
 
-@media (min-width: 768px) {
-  //usun ostatecznie to media
-  table {
+  @media (min-width: 768px) {
+    width: 85%;
+  }
+  @media (min-width: 992px) {
+    width: 70%;
+  }
+  @media (min-width: 1200px) {
     width: 60%;
-    border-spacing: 0;
-    border-collapse: collapse;
-
-    @media (min-width: 768px) {
-      width: 85%;
-    }
-    @media (min-width: 992px) {
-      width: 70%;
-    }
   }
+}
 
-  th,
-  td {
-    height: 50px;
-    border-bottom: 1px solid rgba(211, 211, 211, 0.445);
-  }
+th,
+td {
+  height: 50px;
+  border-bottom: 1px solid rgba(211, 211, 211, 0.445);
+}
 
-  tr:hover {
-    background-color: $green-opacity-light;
-  }
+tbody > tr:hover {
+  background-color: $green-opacity-light;
+}
+
+.isWatched {
+  background-color: $green-opacity-dark;
 }
