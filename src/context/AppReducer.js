@@ -25,6 +25,8 @@ const AppReducer = (state, action) => {
       return { ...state, priceTarget: action.payload };
     case "SET_LOADING":
       return { ...state, loading: true };
+    case "CANCEL_LOADING":
+      return { ...state, loading: false };
     case "SET_CURRENT_PAGE":
       return { ...state, currentPage: action.payload };
     case "OPEN_MODAL":

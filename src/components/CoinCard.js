@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import PriceTargetForm from "../components/PriceTargetForm";
+import isTokenWatched from "../helpers/isTokenWatched";
 
 function CoinCard({
   coin,
@@ -13,15 +14,24 @@ function CoinCard({
   const { watchedCoins, errorPriceNotification, editMode, dispatch } =
     useContext(AppContext);
 
-  const isInWatchedCoins = watchedCoins.filter(
-    (watchedCoin) => watchedCoin.name === coin?.name
-  );
+  useEffect(() => {
+    return () => {
+      dispatch({ type: "DISCARD_EDITION" });
+    };
+  }, []);
 
-  console.log(isInWatchedCoins);
+  const handleMoreCoinInfo = () => {
+    dispatch({ type: "OPEN_MODAL", payload: coin });
+  };
+
   return (
     <div
       className={`coin-box
-    ${isInWatchedCoins.length >= 1 && "isWatched"}
+    ${
+      isTokenWatched(watchedCoins, coin?.id) &&
+      type === "allcoins" &&
+      "isWatched"
+    }
     `}
     >
       <div className="info-box">
@@ -41,7 +51,11 @@ function CoinCard({
             ? "ATH"
             : type === "watched"
             ? "Price Target"
-            : "Set price target"}
+            : type === "selected"
+            ? "Set price target"
+            : type === "selected" && editMode
+            ? "Set new price target"
+            : ""}
         </p>
         <span className="feature-value">
           {type === "allcoins" ? (
@@ -66,7 +80,7 @@ function CoinCard({
       </div>
       <div>
         {type === "allcoins" &&
-          (isInWatchedCoins.length >= 1 ? (
+          (isTokenWatched(watchedCoins, coin.id) ? (
             "Already on the list"
           ) : (
             <Link to={`/selected-coin/${coin?.id}`}>
@@ -78,7 +92,11 @@ function CoinCard({
             Watch
           </button>
         )}
-        {type === "watched" && <button className="button">More</button>}
+        {type === "watched" && (
+          <button onClick={handleMoreCoinInfo} className="button">
+            More
+          </button>
+        )}
         {editMode && (
           <div>
             <button onClick={handleSaveChanges}>Save</button>

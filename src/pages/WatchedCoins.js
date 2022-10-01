@@ -1,20 +1,43 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
-import WatchedCoin from "../components/WatchedCoin";
+import WatchedCoinRow from "../components/WatchedCoinRow";
 import ActionsModal from "../components/ActionsModal";
-import useWindowDimensions from "../hooks/useWindowDimensions";
 import CoinCard from "../components/CoinCard";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import getUpdateWatchedCoinsData from "../helpers/getUpdateWatchedCoinsData";
 
 function WatchedCoins() {
-  const { watchedCoins, openModal, dispatch, selectedCoin, priceTarget } =
-    useContext(AppContext);
+  const {
+    watchedCoins,
+    openModal,
+    dispatch,
+    selectedCoin,
+    priceTarget,
+    loading,
+  } = useContext(AppContext);
+  const [updatedWatchedCoins, setUpdatedWatchedCoins] = useState();
+
   const { width } = useWindowDimensions();
 
   useEffect(() => {
-    return () => {
-      dispatch({ type: "DISCARD_EDITION" });
-    };
-  }, [dispatch]);
+    const interval = setInterval(() => {
+      setUpdatedWatchedCoins(getUpdateWatchedCoinsData(watchedCoins));
+    }, 60000);
+
+    dispatch({ type: "SET_LOADING" });
+
+    setUpdatedWatchedCoins(getUpdateWatchedCoinsData(watchedCoins));
+
+    return () => clearInterval(interval);
+  }, [priceTarget, watchedCoins]);
+
+  // const sortedWatchedCoins = updatedWatchedCoins.sort(
+  //   (a, b) => b.distancePercent - a.distancePercent
+  // );
+
+  useEffect(() => {
+    dispatch({ type: "CANCEL_LOADING" });
+  }, [updatedWatchedCoins]);
 
   const handleSaveChanges = () => {
     if (priceTarget <= 0 || isNaN(priceTarget)) {
@@ -33,9 +56,9 @@ function WatchedCoins() {
 
   return (
     <div>
-      <h2 className="title watched-coins-title">Watched tokens</h2>
+      {/* <h2 className="title watched-coins-title">Watched tokens</h2>
 
-      {watchedCoins.length === 0 ? (
+      {sortedWatchedCoins.length === 0 ? (
         <p className="no-coins-info">No watched coins yet</p>
       ) : (
         <div className="watched-coins-wrapper">
@@ -51,13 +74,17 @@ function WatchedCoins() {
                 </tr>
               </thead>
               <tbody>
-                {watchedCoins?.map((coin) => (
-                  <WatchedCoin key={coin.id} coin={coin} />
-                ))}
+                {loading
+                  ? "Is loading"
+                  : sortedWatchedCoins.map((coin) => (
+                      <WatchedCoinRow key={coin.id} coin={coin} />
+                    ))}
               </tbody>
             </table>
+          ) : loading ? (
+            "Is loading"
           ) : (
-            watchedCoins.map((coin) => (
+            sortedWatchedCoins.map((coin) => (
               <CoinCard
                 key={coin.id}
                 coin={coin}
@@ -68,7 +95,7 @@ function WatchedCoins() {
           )}
           {openModal && <ActionsModal />}
         </div>
-      )}
+      )} */}
     </div>
   );
 }

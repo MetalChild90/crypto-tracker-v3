@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { HiArrowRight } from "react-icons/hi";
-import AppContext from "../context/AppContext";
-import { getCoin } from "../context/AppActions";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { getCoin } from "../context/AppActions";
+import AppContext from "../context/AppContext";
 import CoinCard from "../components/CoinCard";
+import { HiArrowRight } from "react-icons/hi";
 
 function SelectedCoin() {
   const { loading, selectedCoin, dispatch, priceTarget, editMode } =
@@ -23,12 +23,6 @@ function SelectedCoin() {
     fetchCoin();
   }, [params.id, dispatch]);
 
-  useEffect(() => {
-    return () => {
-      dispatch({ type: "REMOVE_SELECTED_COIN" });
-    };
-  }, [dispatch]);
-
   const addToWatchList = () => {
     console.log("work");
     if (priceTarget <= 0 || isNaN(priceTarget)) {
@@ -41,10 +35,10 @@ function SelectedCoin() {
       const newWatchedCoin = {
         id: selectedCoin.id,
         priceTarget,
-        name: selectedCoin.name,
       };
       dispatch({ type: "ADD_TO_WATCHED_LIST", payload: newWatchedCoin });
-      setSuccessNotification(true);
+      navigate("/watched-coins");
+      // setSuccessNotification(true);
     }
   };
 
@@ -59,7 +53,7 @@ function SelectedCoin() {
 
   return (
     <div className="selected-coin-box">
-      {successNotification ? (
+      {/* {successNotification ? (
         <div>
           <h2>Coin is now watched!!</h2>
           <Link to="/watched-coins">
@@ -69,48 +63,19 @@ function SelectedCoin() {
             Choose another coin <HiArrowRight />
           </Link>
         </div>
-      ) : (
-        <>
-          <h2 className="title">
-            {!editMode ? "Add coin to watched list" : "Edit coin"}
-          </h2>
-          <CoinCard
-            coin={selectedCoin}
-            type="selected"
-            handleClose={closeSelectedCoin}
-            addToWatchList={addToWatchList}
-          />
-          {/* <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Price Target</th>
-                <th>Add to watched list</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{selectedCoin?.name}</td>
-                <td>{selectedCoin?.market_data?.current_price?.usd}$</td>
-                <td>
-                  <PriceTargetForm />
-                  {errorPriceNotification && <p>{errorPriceNotification}</p>}
-                </td>
-                <td>
-                  <button className="list-item-button" onClick={handleClick}>
-                    Add
-                  </button>
-                </td>
-                <td>
-                  <button onClick={closeSelectedCoin}>&times;</button>
-                </td>
-              </tr>
-            </tbody>
-          </table> */}
-        </>
-      )}
+      ) : ( */}
+      <>
+        <h2 className="title">
+          {!editMode ? "Add coin to watched list" : "Edit coin"}
+        </h2>
+        <CoinCard
+          coin={selectedCoin}
+          type="selected"
+          handleClose={closeSelectedCoin}
+          addToWatchList={addToWatchList}
+        />
+      </>
+      {/* )} */}
     </div>
   );
 }

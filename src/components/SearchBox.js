@@ -1,7 +1,9 @@
-import PropTypes from "prop-types";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import capitalizeToken from "../helpers/capitalizeToken";
+import isTokenWatched from "../helpers/isTokenWatched";
 import AppContext from "../context/AppContext";
+import PropTypes from "prop-types";
 
 function SearchBox() {
   const { allCoins, watchedCoins } = useContext(AppContext);
@@ -28,20 +30,22 @@ function SearchBox() {
   }
 
   function validateToken(token) {
-    const capitalizedToken =
-      token.charAt(0).toUpperCase() + token.toLowerCase().slice(1);
+    setHints([]);
 
-    const isInWatchedCoins = watchedCoins.filter(
-      (coin) => coin.name === capitalizedToken
-    );
+    const capitalizedToken = capitalizeToken(token);
+
     const isTokenExist = allCoins.filter(
       (coin) => coin.name === capitalizedToken
     );
+    console.log(isTokenExist);
     const tokenId = isTokenExist[0]?.id;
+    console.log(tokenId);
 
+    const isWatched = isTokenWatched(watchedCoins, tokenId);
+    console.log(isWatched);
     if (typedCoin === "") {
       setTextNotification("Please, enter name of the coin");
-    } else if (isInWatchedCoins.length > 0) {
+    } else if (isWatched) {
       setTextNotification(
         "You already have this token in your watchlist, choose another one"
       );
@@ -66,10 +70,6 @@ function SearchBox() {
     setHints([]);
   }
 
-  function handleFocus() {
-    setTextNotification("");
-  }
-
   return (
     <div className="search-box">
       <div className="input-wrapper">
@@ -80,7 +80,7 @@ function SearchBox() {
             value={typedCoin}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onFocus={handleFocus}
+            onFocus={() => setTextNotification("")}
             className="search-input"
             placeholder="Write correct token name"
           />
@@ -99,7 +99,7 @@ function SearchBox() {
             {hints.map((hint, i) => (
               <p
                 className="hint"
-                onClick={() => navigate(`/selected-coin/${hint.id}`)}
+                onClick={() => validateToken(hint.name)}
                 key={i}
               >
                 {hint.name}

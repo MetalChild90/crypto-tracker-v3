@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
+import PropTypes from "prop-types";
 
 const Pagination = () => {
   const { coinsPerPage, allCoins, currentPage, dispatch } =

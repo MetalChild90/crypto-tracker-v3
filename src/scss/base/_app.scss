@@ -55,7 +55,6 @@ body {
 .title {
   margin-bottom: 40px;
   font-size: 25px;
-  text-transform: uppercase;
 
   @media (max-width: 576px) {
     margin-top: 20px;
@@ -89,12 +88,19 @@ table {
   @media (min-width: 1200px) {
     width: 60%;
   }
+  @media (min-width: 1400px) {
+    width: 50%;
+  }
 }
 
 th,
 td {
   height: 50px;
   border-bottom: 1px solid rgba(211, 211, 211, 0.445);
+}
+
+tr {
+  transition: $trd;
 }
 
 tbody > tr:hover {

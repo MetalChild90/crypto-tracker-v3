@@ -1,26 +1,23 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
+import isTokenWatched from "../helpers/isTokenWatched";
 
 function Coin({ coin }) {
   const { watchedCoins } = useContext(AppContext);
-
-  const isInWatchedCoins = watchedCoins.filter(
-    (watchedCoin) => watchedCoin.name === coin.name
-  );
 
   return (
     <tr
       key={coin.id}
       className={`coins-list-item
-      ${isInWatchedCoins.length >= 1 && "isWatched"}
+      ${isTokenWatched(watchedCoins, coin.id) && "isWatched"}
       `}
     >
       <td>{coin.name}</td>
       <td>{coin.current_price}</td>
       <td>{coin.ath}</td>
       <td>
-        {isInWatchedCoins.length >= 1 ? (
+        {isTokenWatched(watchedCoins, coin.id) ? (
           "Already on the list"
         ) : (
           <Link to={`/selected-coin/${coin.id}`}>
