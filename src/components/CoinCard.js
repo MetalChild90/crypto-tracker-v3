@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import AppContext from "../context/AppContext";
 import PriceTargetForm from "../components/PriceTargetForm";
 import isTokenWatched from "../helpers/isTokenWatched";
@@ -11,14 +11,13 @@ function CoinCard({
   addToWatchList,
   handleSaveChanges,
 }) {
-  const { watchedCoins, errorPriceNotification, editMode, dispatch } =
-    useContext(AppContext);
-
-  useEffect(() => {
-    return () => {
-      dispatch({ type: "DISCARD_EDITION" });
-    };
-  }, []);
+  const {
+    watchedCoins,
+    errorPriceNotification,
+    editMode,
+    dispatch,
+    selectedCoin,
+  } = useContext(AppContext);
 
   const handleMoreCoinInfo = () => {
     dispatch({ type: "OPEN_MODAL", payload: coin });
@@ -26,12 +25,18 @@ function CoinCard({
 
   return (
     <div
-      className={`coin-box
+      className={`coin-box 
     ${
       isTokenWatched(watchedCoins, coin?.id) &&
       type === "allcoins" &&
       "isWatched"
-    }
+    } ${
+        coin?.distancePercent >= 0
+          ? "target-hitted"
+          : coin?.distancePercent >= -10
+          ? "alert-zone"
+          : ""
+      }
     `}
     >
       <div className="info-box">
@@ -53,28 +58,26 @@ function CoinCard({
             ? "Price Target"
             : type === "selected"
             ? "Set price target"
-            : type === "selected" && editMode
+            : editMode
             ? "Set new price target"
             : ""}
         </p>
         <span className="feature-value">
           {type === "allcoins" ? (
             coin?.ath
+          ) : type === "selected" ||
+            (editMode && selectedCoin?.id === coin.id) ? (
+            <PriceTargetForm type={type} coin={coin} />
           ) : type === "watched" ? (
             coin?.priceTarget
           ) : (
-            <>
-              <PriceTargetForm />
-              {errorPriceNotification && (
-                <p className="notification">{errorPriceNotification}</p>
-              )}
-            </>
+            ""
           )}
         </span>
         {type === "watched" && (
           <>
             <p className="feature-title">Distance</p>
-            {/* <span className="feature-value">{distancePercent}%</span> */}
+            <span className="feature-value">{coin?.distancePercent}%</span>
           </>
         )}
       </div>
@@ -84,26 +87,13 @@ function CoinCard({
             "Already on the list"
           ) : (
             <Link to={`/selected-coin/${coin?.id}`}>
-              <button className="button list-item-button">Select</button>
+              <button className="btn list-item-button">Select</button>
             </Link>
           ))}
-        {type === "selected" && !editMode && (
-          <button onClick={addToWatchList} className="button">
-            Watch
-          </button>
-        )}
-        {type === "watched" && (
-          <button onClick={handleMoreCoinInfo} className="button">
+        {type === "watched" && !editMode && (
+          <button onClick={handleMoreCoinInfo} className="btn">
             More
           </button>
-        )}
-        {editMode && (
-          <div>
-            <button onClick={handleSaveChanges}>Save</button>
-            <button onClick={() => dispatch({ type: "DISCARD_EDITION" })}>
-              Discard
-            </button>
-          </div>
         )}
       </div>
     </div>

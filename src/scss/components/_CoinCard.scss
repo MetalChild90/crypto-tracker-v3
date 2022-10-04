@@ -14,13 +14,13 @@
   transition-duration: $trd;
 
   @media (max-width: 576px) {
-    width: 90%;
+    width: 70%;
   }
   @media (max-width: 768px) {
-    width: 80%;
+    width: 50%;
   }
   @media (min-width: 768px) {
-    width: 50%;
+    width: 30%;
   }
 
   & .info-box {
@@ -54,4 +54,12 @@ input[type="number"] {
 
 .isWatched {
   background-color: $green-opacity-dark;
+}
+
+.target-hitted {
+  background-color: rgba(255, 50, 50, 0.4);
+}
+
+.alert-zone {
+  background-color: rgba(229, 250, 44, 0.4);
 }

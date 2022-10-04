@@ -1,17 +1,17 @@
 import { getCoin } from "../context/AppActions";
 import calculatePercent from "./calculatePercent";
 
-const getUpdateWatchedCoinsData = (watchedCoins) => {
-  const fetchedCoins = Promise.all(
+const getUpdateWatchedCoinsData = async (watchedCoins) => {
+  return await Promise.all(
     watchedCoins.map(async (coin) => {
       const fetchedCoin = await getCoin(coin.id);
-      return fetchedCoin;
+      const distancePercent = calculatePercent(
+        fetchedCoin.market_data.current_price.usd,
+        coin.priceTarget
+      );
+      return { ...coin, ...fetchedCoin, distancePercent };
     })
   );
-
-  // calculatePercent(price, coin.priceTarget)
-
-  return;
 };
 
 export default getUpdateWatchedCoinsData;

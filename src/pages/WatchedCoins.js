@@ -3,6 +3,7 @@ import AppContext from "../context/AppContext";
 import WatchedCoinRow from "../components/WatchedCoinRow";
 import ActionsModal from "../components/ActionsModal";
 import CoinCard from "../components/CoinCard";
+import Spinner from "../components/Spinner";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import getUpdateWatchedCoinsData from "../helpers/getUpdateWatchedCoinsData";
 
@@ -15,54 +16,47 @@ function WatchedCoins() {
     priceTarget,
     loading,
   } = useContext(AppContext);
-  const [updatedWatchedCoins, setUpdatedWatchedCoins] = useState();
+  const [updatedWatchedCoins, setUpdatedWatchedCoins] = useState([]);
+  const [sortedWatchedCoins, setSortedWatchedCoins] = useState([]);
 
   const { width } = useWindowDimensions();
 
   useEffect(() => {
+    async function getCoinsData() {
+      const fetchedCoins = await getUpdateWatchedCoinsData(watchedCoins);
+      setUpdatedWatchedCoins(fetchedCoins);
+    }
+
     const interval = setInterval(() => {
-      setUpdatedWatchedCoins(getUpdateWatchedCoinsData(watchedCoins));
+      getCoinsData();
     }, 60000);
 
     dispatch({ type: "SET_LOADING" });
 
-    setUpdatedWatchedCoins(getUpdateWatchedCoinsData(watchedCoins));
+    getCoinsData();
 
     return () => clearInterval(interval);
-  }, [priceTarget, watchedCoins]);
-
-  // const sortedWatchedCoins = updatedWatchedCoins.sort(
-  //   (a, b) => b.distancePercent - a.distancePercent
-  // );
+  }, [priceTarget, watchedCoins, dispatch]);
 
   useEffect(() => {
+    const sortedWatchedCoins = updatedWatchedCoins.sort(
+      (a, b) => b.distancePercent - a.distancePercent
+    );
+    setSortedWatchedCoins(sortedWatchedCoins);
     dispatch({ type: "CANCEL_LOADING" });
   }, [updatedWatchedCoins]);
 
-  const handleSaveChanges = () => {
-    if (priceTarget <= 0 || isNaN(priceTarget)) {
-      dispatch({
-        type: "SET_ERROR_PRICE_NOTIFICATION",
-        payload: "Price target can't be 0",
-      });
-      return;
-    } else {
-      const updatedWatchedCoins = watchedCoins.map((coin) =>
-        coin.id === selectedCoin.id ? { ...selectedCoin, priceTarget } : coin
-      );
-      dispatch({ type: "SAVE_EDITION", payload: updatedWatchedCoins });
-    }
-  };
-
   return (
     <div>
-      {/* <h2 className="title watched-coins-title">Watched tokens</h2>
+      <h2 className="title watched-coins-title">Watched tokens</h2>
 
       {sortedWatchedCoins.length === 0 ? (
         <p className="no-coins-info">No watched coins yet</p>
       ) : (
-        <div className="watched-coins-wrapper">
-          {width > 768 ? (
+        <div className="coins-list">
+          {loading ? (
+            <Spinner />
+          ) : width > 992 ? (
             <table>
               <thead>
                 <tr>
@@ -74,28 +68,19 @@ function WatchedCoins() {
                 </tr>
               </thead>
               <tbody>
-                {loading
-                  ? "Is loading"
-                  : sortedWatchedCoins.map((coin) => (
-                      <WatchedCoinRow key={coin.id} coin={coin} />
-                    ))}
+                {sortedWatchedCoins.map((coin) => (
+                  <WatchedCoinRow key={coin.id} coin={coin} />
+                ))}
               </tbody>
             </table>
-          ) : loading ? (
-            "Is loading"
           ) : (
             sortedWatchedCoins.map((coin) => (
-              <CoinCard
-                key={coin.id}
-                coin={coin}
-                type="watched"
-                handleSaveChanges={handleSaveChanges}
-              />
+              <CoinCard key={coin.id} coin={coin} type="watched" />
             ))
           )}
           {openModal && <ActionsModal />}
         </div>
-      )} */}
+      )}
     </div>
   );
 }

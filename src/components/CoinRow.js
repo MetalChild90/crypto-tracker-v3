@@ -21,7 +21,7 @@ function Coin({ coin }) {
           "Already on the list"
         ) : (
           <Link to={`/selected-coin/${coin.id}`}>
-            <button className="button list-item-button">Select</button>
+            <button className="btn list-item-button">Select</button>
           </Link>
         )}
       </td>

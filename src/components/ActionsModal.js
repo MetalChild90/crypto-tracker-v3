@@ -1,11 +1,8 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import AppContext from "../context/AppContext";
 
 function ActionsModal() {
   const { dispatch, watchedCoins, selectedCoin } = useContext(AppContext);
-
-  const navigate = useNavigate();
 
   const closeModalHandler = () => {
     dispatch({ type: "CLOSE_MODAL" });
@@ -13,7 +10,6 @@ function ActionsModal() {
 
   const handleEditClick = () => {
     dispatch({ type: "OPEN_EDIT_MODE", payload: selectedCoin.priceTarget });
-    navigate(`/selected-coin/${selectedCoin?.id}`);
   };
 
   const handleDeleteClick = () => {
@@ -27,14 +23,11 @@ function ActionsModal() {
     <div className="modal">
       <div className="modal-wrapper" onClick={closeModalHandler}>
         <div className="action-button-box">
-          <button
-            className="button button-full-width"
-            onClick={handleEditClick}
-          >
+          <button className="btn btn-full-width" onClick={handleEditClick}>
             Edit
           </button>
           <button
-            className="button button-delete button-full-width"
+            className="btn btn-delete btn-full-width"
             onClick={handleDeleteClick}
           >
             Delete

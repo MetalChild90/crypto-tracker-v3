@@ -5,6 +5,7 @@ import Pagination from "../components/Pagination";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import CoinRow from "../components/CoinRow";
 import CoinCard from "../components/CoinCard";
+import Spinner from "../components/Spinner";
 
 function AllCoins() {
   const { loading, coins, currentPage, dispatch } = useContext(AppContext);
@@ -23,10 +24,10 @@ function AllCoins() {
     <div>
       <h2>Select coin from a list:</h2>
       {loading ? (
-        "Is loading..."
+        <Spinner />
       ) : (
         <div className="coins-list">
-          {width > 768 ? (
+          {width > 992 ? (
             <table className="coins-table">
               <thead>
                 <tr>

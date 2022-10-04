@@ -16,13 +16,6 @@ const AppReducer = (state, action) => {
         selectedCoin: null,
         errorPriceNotification: "",
       };
-    case "RETRIVE_WATCHED_LIST_FROM_STORAGE":
-      return {
-        ...state,
-        watchedCoins: action.payload,
-      };
-    case "ADD_PRICE_TARGET":
-      return { ...state, priceTarget: action.payload };
     case "SET_LOADING":
       return { ...state, loading: true };
     case "CANCEL_LOADING":
@@ -53,12 +46,6 @@ const AppReducer = (state, action) => {
         editMode: false,
         selectedCoin: null,
         priceTarget: 0,
-        errorPriceNotification: "",
-      };
-    case "SET_ERROR_PRICE_NOTIFICATION":
-      return {
-        ...state,
-        errorPriceNotification: action.payload,
       };
     default:
       return state;

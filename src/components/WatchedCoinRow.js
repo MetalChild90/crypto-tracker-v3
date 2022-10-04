@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { FiMoreHorizontal } from "react-icons/fi";
 import AppContext from "../context/AppContext";
+import PriceTargetForm from "./PriceTargetForm";
 
-function WatchedCoin({ coin }) {
-  const { dispatch } = useContext(AppContext);
+function WatchedCoinRow({ coin, handleSaveChanges }) {
+  const { dispatch, editMode, selectedCoin } = useContext(AppContext);
 
   const handleClick = () => {
     dispatch({ type: "OPEN_MODAL", payload: coin });
@@ -21,8 +22,14 @@ function WatchedCoin({ coin }) {
       key={coin.id}
     >
       <td>{coin.name}</td>
-      <td>{coin.price}</td>
-      <td>{coin.priceTarget}$</td>
+      <td>{coin.market_data.current_price.usd}</td>
+      <td>
+        {editMode && coin.id === selectedCoin?.id ? (
+          <PriceTargetForm />
+        ) : (
+          coin.priceTarget + "$"
+        )}
+      </td>
       <td>{coin.distancePercent}%</td>
       <td>
         <span>
@@ -33,4 +40,4 @@ function WatchedCoin({ coin }) {
   );
 }
 
-export default WatchedCoin;
+export default WatchedCoinRow;

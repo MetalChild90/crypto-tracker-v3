@@ -89,7 +89,7 @@ function SearchBox() {
           </span>
         </div>
         <span
-          className="button search-button"
+          className="btn search-button"
           onClick={() => validateToken(typedCoin)}
         >
           Search
